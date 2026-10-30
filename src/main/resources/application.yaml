@@ -1,0 +1,32 @@
+# Server
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+# Database
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      url: jdbc:mysql://localhost:3306/headline_db?useUnicode=true&characterEncoding=utf8&serverTimezone=Europe/Rome
+      username: root
+      password: 123.com
+      driver-class-name: com.mysql.cj.jdbc.Driver
+
+# MyBatis-Plus
+mybatis-plus:
+  type-aliases-package: com.example.pojo
+  global-config:
+    db-config:
+      logic-delete-field: isDeleted  # Logical delete field
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      id-type: auto  # Auto-increment primary key
+      table-prefix: news_  # Table name prefix
+
+# jwt
+jwt:
+  token:
+    tokenExpiration: 120
+    tokenSignKey: headline123
