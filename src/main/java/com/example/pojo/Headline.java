@@ -2,12 +2,14 @@ package com.example.pojo;
 
 import java.util.Date;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.Version;
 import lombok.Data;
 
 @Data
 public class Headline {
 
+    @TableId
     private Integer hid;
 
     private String title;

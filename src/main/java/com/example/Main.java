@@ -22,6 +22,7 @@ public class Main {
     // Configure MyBatis-Plus plugins
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
+
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
 
         // Pagination

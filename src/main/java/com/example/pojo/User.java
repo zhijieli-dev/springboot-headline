@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 public class User {
 
+    @TableId
     private Integer uid;
 
     private String username;
