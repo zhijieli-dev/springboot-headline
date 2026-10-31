@@ -11,10 +11,14 @@ Progetto backend per la gestione di notizie, sviluppato con Java e Spring Boot.
 - Druid
 - JWT
 
-## Funzionalità previste
-- Registrazione e autenticazione utenti
-- Consultazione delle notizie
-- Ricerca delle notizie per titolo
-- Visualizzazione dei dettagli
-- Modifica ed eliminazione delle notizie
-- Paginazione
+## API utenti
+
+| Metodo | Endpoint | Descrizione |
+|---|---|---|
+| POST | `/user/login` | Effettua il login e genera un token JWT |
+| GET | `/user/getUserInfo` | Recupera le informazioni dell'utente autenticato |
+| POST | `/user/checkUserName` | Verifica se un nome utente è già utilizzato |
+| POST | `/user/register` | Registra un nuovo utente |
+
+
+
