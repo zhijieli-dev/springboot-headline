@@ -44,12 +44,12 @@ Contiene le categorie delle notizie.
 
 ## API utenti
 
-| Metodo | Endpoint | Descrizione |
-|---|---|---|
-| POST | `/user/login` | Effettua il login e genera un token JWT |
-| GET | `/user/getUserInfo` | Recupera le informazioni dell'utente autenticato |
-| POST | `/user/checkUserName` | Verifica se un nome utente è già utilizzato |
-| POST | `/user/register` | Registra un nuovo utente |
+| Metodo | Endpoint | Parametri | Descrizione |
+|---|---|---|---|
+| POST | `/user/login` | `username`, `userPwd` | Effettua il login e restituisce un token JWT |
+| GET | `/user/getUserInfo` | `token` | Recupera le informazioni dell'utente autenticato |
+| POST | `/user/checkUserName` | `username` | Verifica se il nome utente è già utilizzato |
+| POST | `/user/register` | `username`, `userPwd`, `nickName` | Registra un nuovo utente |
 
 
 
