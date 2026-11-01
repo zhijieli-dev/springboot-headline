@@ -3,6 +3,7 @@
 Progetto backend per la gestione di notizie, sviluppato con Java e Spring Boot.
 
 ## Tecnologie utilizzate
+
 - Java 21
 - Spring Boot 4
 - Spring MVC
@@ -11,10 +12,27 @@ Progetto backend per la gestione di notizie, sviluppato con Java e Spring Boot.
 - Druid
 - JWT
 
+## Funzionalità principali
+
+- Registrazione e autenticazione degli utenti
+- Generazione e verifica dei token JWT
+- Controllo della disponibilità del nome utente
+- Pubblicazione di nuove notizie
+- Consultazione delle notizie con paginazione
+- Ricerca delle notizie
+- Visualizzazione dei dettagli delle notizie
+- Modifica ed eliminazione delle notizie
+- Gestione delle categorie
+- Conteggio delle visualizzazioni delle notizie
+
 ## Database
 
+Il database MySQL contiene tre tabelle principali.
+
 ### `news_user`
+
 Contiene le informazioni degli utenti registrati.
+
 - `uid`: identificativo dell'utente
 - `username`: nome utente
 - `user_pwd`: password
@@ -23,7 +41,9 @@ Contiene le informazioni degli utenti registrati.
 - `is_deleted`: stato di eliminazione
 
 ### `news_headline`
+
 Contiene le notizie pubblicate.
+
 - `hid`: identificativo della notizia
 - `title`: titolo
 - `article`: contenuto della notizia
@@ -36,20 +56,47 @@ Contiene le notizie pubblicate.
 - `is_deleted`: stato di eliminazione
 
 ### `news_type`
+
 Contiene le categorie delle notizie.
+
 - `tid`: identificativo della categoria
 - `tname`: nome della categoria
 - `version`: versione del record
 - `is_deleted`: stato di eliminazione
 
-## API utenti
+## API
 
-| Metodo | Endpoint | Parametri | Descrizione |
+### Gestione utenti
+
+| Metodo | Endpoint | Parametri principali | Descrizione |
 |---|---|---|---|
 | POST | `/user/login` | `username`, `userPwd` | Effettua il login e restituisce un token JWT |
-| GET | `/user/getUserInfo` | `token` | Recupera le informazioni dell'utente autenticato |
-| POST | `/user/checkUserName` | `username` | Verifica se il nome utente è già utilizzato |
+| GET | `/user/getUserInfo` | Header `token` | Recupera le informazioni dell'utente autenticato |
+| POST | `/user/checkUserName` | `username` | Verifica la disponibilità del nome utente |
 | POST | `/user/register` | `username`, `userPwd`, `nickName` | Registra un nuovo utente |
+| GET | `/user/checkLogin` | Header `token` | Verifica la validità del token |
 
+### Gestione notizie
 
+| Metodo | Endpoint | Parametri principali | Descrizione |
+|---|---|---|---|
+| POST | `/headline/publish` | `Headline`, Header `token` | Pubblica una nuova notizia |
+| POST | `/headline/findHeadlineById` | `hid` | Recupera una notizia tramite ID |
+| POST | `/headline/update` | `Headline` | Modifica una notizia |
+| POST | `/headline/removeByHid` | `hid` | Elimina una notizia |
 
+### Portale
+
+| Metodo | Endpoint | Parametri principali | Descrizione |
+|---|---|---|---|
+| GET | `/portal/findAllTypes` | Nessuno | Recupera tutte le categorie |
+| POST | `/portal/findNewsPage` | `PortalVo` | Recupera le notizie con paginazione |
+| POST | `/portal/showHeadlineDetail` | `hid` | Visualizza i dettagli di una notizia |
+
+## Autenticazione
+
+L'applicazione utilizza JWT (JSON Web Token) per gestire l'autenticazione degli utenti.
+
+Dopo il login, il server restituisce un token che deve essere inviato nell'header `token` delle richieste agli endpoint protetti.
+
+Un interceptor verifica la validità del token prima di consentire l'accesso alle operazioni protette.
