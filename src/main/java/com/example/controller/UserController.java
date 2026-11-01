@@ -2,7 +2,9 @@ package com.example.controller;
 
 import com.example.pojo.User;
 import com.example.service.UserService;
+import com.example.utils.JwtHelper;
 import com.example.utils.Result;
+import com.example.utils.ResultCodeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,31 +13,41 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class UserController {
 
-    // Service that handles user operations
     @Autowired
     private UserService userService;
 
-    // User login
+    @Autowired
+    private JwtHelper jwtHelper;
+
     @PostMapping("login")
     public Result login(@RequestBody User user) {
         return userService.login(user);
     }
 
-    // Retrieve user information
     @GetMapping("getUserInfo")
-    public Result getUserInfo(@RequestBody String token) {
+    public Result getUserInfo(@RequestHeader String token) {
         return userService.getUserInfo(token);
     }
 
-    // Check if the username is already taken
     @PostMapping("checkUserName")
     public Result checkUserName(String username) {
         return userService.checkUserName(username);
     }
 
-    // Register a new user
     @PostMapping("register")
     public Result register(@RequestBody User user) {
         return userService.register(user);
+    }
+
+    // Check whether the user's JWT token is still valid
+    @GetMapping("checkLogin")
+    public Result checkLogin(@RequestHeader String token) {
+        boolean expiration = jwtHelper.isExpiration(token);
+
+        if (expiration) {
+            return Result.build(null, ResultCodeEnum.NOTLOGIN);
+        }
+
+        return Result.ok(null);
     }
 }

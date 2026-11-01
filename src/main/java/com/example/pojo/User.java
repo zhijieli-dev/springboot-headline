@@ -19,4 +19,5 @@ public class User {
     private Integer version;
 
     private Integer isDeleted;
+
 }

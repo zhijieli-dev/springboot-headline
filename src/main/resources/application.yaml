@@ -28,5 +28,5 @@ mybatis-plus:
 # jwt
 jwt:
   token:
-    tokenExpiration: 120
+    tokenExpiration: 120000000
     tokenSignKey: headline123
