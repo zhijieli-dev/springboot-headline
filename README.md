@@ -19,7 +19,8 @@ Progetto backend per la gestione di notizie, sviluppato con Java e Spring Boot.
 - Controllo della disponibilità del nome utente
 - Pubblicazione di nuove notizie
 - Consultazione delle notizie con paginazione
-- Ricerca delle notizie
+- Ricerca delle notizie per titolo
+- Filtraggio delle notizie per categoria
 - Visualizzazione dei dettagli delle notizie
 - Modifica ed eliminazione delle notizie
 - Gestione delle categorie
@@ -68,35 +69,74 @@ Contiene le categorie delle notizie.
 
 ### Gestione utenti
 
-| Metodo | Endpoint | Parametri principali | Descrizione |
-|---|---|---|---|
-| POST | `/user/login` | `username`, `userPwd` | Effettua il login e restituisce un token JWT |
-| GET | `/user/getUserInfo` | Header `token` | Recupera le informazioni dell'utente autenticato |
-| POST | `/user/checkUserName` | `username` | Verifica la disponibilità del nome utente |
+| Metodo | Endpoint | Parametri                         | Descrizione |
+|---|---|-----------------------------------|---|
+| POST | `/user/login` | `username`, `userPwd`             | Effettua il login e restituisce un token JWT |
+| GET | `/user/getUserInfo` | Header: `token`                   | Recupera le informazioni dell'utente autenticato |
+| POST | `/user/checkUserName` | `username`                        | Verifica se il nome utente è già utilizzato |
 | POST | `/user/register` | `username`, `userPwd`, `nickName` | Registra un nuovo utente |
-| GET | `/user/checkLogin` | Header `token` | Verifica la validità del token |
+| GET | `/user/checkLogin` | Header: `token`                   | Verifica la validità del token |
 
 ### Gestione notizie
 
-| Metodo | Endpoint | Parametri principali | Descrizione |
+| Metodo | Endpoint | Parametri | Descrizione |
 |---|---|---|---|
-| POST | `/headline/publish` | `Headline`, Header `token` | Pubblica una nuova notizia |
+| POST | `/headline/publish` | `title`, `article`, `type`; Header: `token` | Pubblica una nuova notizia |
 | POST | `/headline/findHeadlineById` | `hid` | Recupera una notizia tramite ID |
-| POST | `/headline/update` | `Headline` | Modifica una notizia |
+| POST | `/headline/update` | `hid`, `title`, `article`, `type` | Modifica una notizia |
 | POST | `/headline/removeByHid` | `hid` | Elimina una notizia |
 
 ### Portale
 
-| Metodo | Endpoint | Parametri principali | Descrizione |
-|---|---|---|---|
-| GET | `/portal/findAllTypes` | Nessuno | Recupera tutte le categorie |
-| POST | `/portal/findNewsPage` | `PortalVo` | Recupera le notizie con paginazione |
-| POST | `/portal/showHeadlineDetail` | `hid` | Visualizza i dettagli di una notizia |
+| Metodo | Endpoint | Parametri                                 | Descrizione |
+|---|---|-------------------------------------------|---|
+| GET | `/portal/findAllTypes` |                                           | Recupera tutte le categorie |
+| POST | `/portal/findNewsPage` | `keyWords`, `type`, `pageNum`, `pageSize` | Recupera le notizie filtrate e paginate |
+| POST | `/portal/showHeadlineDetail` | `hid`                                     | Visualizza i dettagli di una notizia e aggiorna il numero di visualizzazioni |
+
+### Esempi di richieste JSON
+
+**Registrazione – `POST /user/register`**
+
+```json
+{
+  "username": "mario",
+  "userPwd": "password123",
+  "nickName": "Mario"
+}
+```
+
+**Login – `POST /user/login`**
+
+```json
+{
+  "username": "mario",
+  "userPwd": "password123"
+}
+```
+
+**Ricerca notizie – `POST /portal/findNewsPage`**
+
+```json
+{
+  "keyWords": "technology",
+  "type": 2,
+  "pageNum": 1,
+  "pageSize": 10
+}
+```
+
+Parametri della ricerca:
+
+- `keyWords`: parola chiave utilizzata per la ricerca nel titolo.
+- `type`: identificativo della categoria; il valore `0` indica tutte le categorie.
+- `pageNum`: numero della pagina richiesta.
+- `pageSize`: numero di notizie per pagina.
 
 ## Autenticazione
 
 L'applicazione utilizza JWT (JSON Web Token) per gestire l'autenticazione degli utenti.
 
-Dopo il login, il server restituisce un token che deve essere inviato nell'header `token` delle richieste agli endpoint protetti.
+Dopo il login, il server restituisce un token che deve essere inviato nell'header HTTP `token` delle richieste agli endpoint protetti.
 
 Un interceptor verifica la validità del token prima di consentire l'accesso alle operazioni protette.
